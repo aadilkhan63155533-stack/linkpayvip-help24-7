@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Register - Link Pay VIP</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0b5cff, #6a11cb);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.20);
+    }
+
+    .logo {
+      text-align: center;
+      font-size: 30px;
+      font-weight: 700;
+      color: #1769ff;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin: 14px 0 7px;
+      color: #222;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #1769ff;
+    }
+
+    .otp-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .otp-row input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .otp-btn {
+      border: none;
+      background: #1769ff;
+      color: white;
+      border-radius: 10px;
+      padding: 0 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .otp-btn:hover {
+      background: #0d55d8;
+    }
+
+    .otp-btn:disabled {
+      background: #aaa;
+      cursor: not-allowed;
+    }
+
+    .agree {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      margin: 18px 0;
+      color: #555;
+      font-size: 14px;
+    }
+
+    .agree input {
+      width: auto;
+      margin-top: 3px;
+    }
+
+    .signup-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #1769ff;
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .signup-btn:hover {
+      background: #0d55d8;
+    }
+
+    .message {
+      text-align: center;
+      margin-top: 14px;
+      min-height: 20px;
+      font-size: 14px;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 18px;
+      color: #666;
+    }
+
+    .login-link a {
+      color: #1769ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .version {
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <div class="logo">
+      Link Pay VIP
+    </div>
+
+    <div class="subtitle">
+      Create Your Account
+    </div>
+
+    <!-- User Name -->
+    <label for="username">User Name</label>
+
+    <input
+      id="username"
+      type="text"
+      placeholder="Enter user name"
+    >
+
+    <!-- Phone Number -->
+    <label for="phone">+91 Phone Number</label>
+
+    <input
+      id="phone"
+      type="tel"
+      maxlength="10"
+      inputmode="numeric"
+      placeholder="Enter 10-digit phone number"
+    >
+
+    <!-- OTP -->
+    <label for="otp">OTP Code</label>
+
+    <div class="otp-row">
+
+      <input
+        id="otp"
+        type="text"
+        maxlength="6"
+        inputmode="numeric"
+        placeholder="6-digit OTP"
+      >
+
+      <button
+        type="button"
+        class="otp-btn"
+        id="otpBtn"
+        onclick="sendOTP()"
+      >
+        Send OTP
+      </button>
+
+    </div>
+
+    <!-- Password -->
+    <label for="password">Password</label>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Create password"
+    >
+
+    <!-- Invite Code -->
+    <label for="invite">Invite Code</label>
+
+    <input
+      id="invite"
+      type="text"
+      placeholder="Enter invite code"
+    >
+
+    <!-- Privacy -->
+    <label class="agree">
+
+      <input
+        id="privacy"
+        type="checkbox"
+      >
+
+      <span>
+        I agree to the User Privacy Agreement.
+      </span>
+
+    </label>
+
+    <!-- Sign Up -->
+    <button
+      type="button"
+      class="signup-btn"
+      onclick="registerUser()"
+    >
+      Sign Up
+    </button>
+
+    <!-- Message -->
+    <div
+      class="message"
+      id="message"
+    ></div>
+
+    <!-- Login -->
+    <div class="login-link">
+      Already have an account?
+      <a href="index.html">Sign In</a>
+    </div>
+
+    <!-- Version -->
+    <div class="version">
+      v1.2.3
+    </div>
+
+  </div>
+
+
+  <script>
+
+    let otpTimer;
+
+
+    // Send OTP button
+    // यह केवल demo countdown है।
+    // इससे कोई वास्तविक SMS नहीं भेजा जाता।
+
+    function sendOTP() {
+
+      const phone =
+        document.getElementById("phone").value.trim();
+
+      const otpBtn =
+        document.getElementById("otpBtn");
+
+      const message =
+        document.getElementById("message");
+
+
+      if (!/^\d{10}$/.test(phone)) {
+
+        message.style.color = "#d33";
+
+        message.textContent =
+          "Enter a valid 10-digit phone number.";
+
+        return;
+      }
+
+
+      message.style.color = "#16833a";
+
+      message.textContent =
+        "OTP request sent.";
+
+
+      let seconds = 60;
+
+      otpBtn.disabled = true;
+
+      otpBtn.textContent =
+        "Resend (" + seconds + "s)";
+
+
+      clearInterval(otpTimer);
+
+
+      otpTimer = setInterval(function () {
+
+        seconds--;
+
+        otpBtn.textContent =
+          "Resend (" + seconds + "s)";
+
+
+        if (seconds <= 0) {
+
+          clearInterval(otpTimer);
+
+          otpBtn.disabled = false;
+
+          otpBtn.textContent =
+            "Send OTP";
+        }
+
+      }, 1000);
+    }
+
+
+    // Registration
+
+    function registerUser() {
+
+      const username =
+        document.getElementById("username").value.trim();
+
+      const phone =
+        document.getElementById("phone").value.trim();
+
+      const otp =
+        document.getElementById("otp").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+      const invite =
+        document.getElementById("invite").value.trim();
+
+      const privacy =
+        document.getElementById("privacy").checked;
+
+      const message =
+        document.getElementById("message");
+
+
+      message.style.color = "#d33";
+
+
+      // Required fields
+
+      if (
+        !username ||
+        !phone ||
+        !password ||
+        !invite
+      ) {
+
+        message.textContent =
+          "Please fill all required fields.";
+
+        return;
+      }
+
+
+      // OTP must be 6 digits.
+      // कोई भी 6-digit number valid/verified नहीं माना जाएगा।
+
+      if (!/^\d{6}$/.test(otp)) {
+
+        message.textContent =
+          "Invalid OTP Code";
+
+        return;
+      }
+
+
+      // Privacy agreement
+
+      if (!privacy) {
+
+        message.textContent =
+          "Please accept the Privacy Agreement.";
+
+        return;
+      }
+
+
+      // कोई fake success नहीं
+
+      message.style.color = "#d33";
+
+      message.textContent =
+        "Invalid OTP Code";
+
+    }
+
+  </script>
+
+</body>
+</html>
