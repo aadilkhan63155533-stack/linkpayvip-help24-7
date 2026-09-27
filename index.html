@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Linkpay VIP - Sign In</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+  <img class="brand-logo" src="logo.png" alt="Linkpay VIP">
+  <div class="tabs">
+    <button class="tab active">Sign In</button>
+    <a class="tab" href="register.html">Register</a>
+  </div>
+
+  <div class="field"><span>👤</span><input id="phone" type="tel" placeholder="Phone" inputmode="numeric"></div>
+  <div class="field"><span>🔒</span><input id="password" type="password" placeholder="Password"></div>
+  <div class="field"><span>🔑</span><input id="pin" type="password" maxlength="6" placeholder="6-digit PIN" inputmode="numeric"></div>
+
+  <div class="options">
+    <label><input type="checkbox"> <span>Remember Me</span></label>
+    <a href="#" onclick="return false">Privacy Agreement</a>
+  </div>
+
+  <button class="main-btn" id="signIn">Sign In</button>
+  <p id="message" class="message"></p>
+</div>
+
+<div class="overlay hidden" id="otpBox">
+  <div class="popup">
+    <button class="x" id="close">×</button>
+    <h2>OTP Verification</h2>
+    <p>Enter the OTP sent to your phone.</p>
+    <input id="otp" class="otp" maxlength="6" inputmode="numeric" placeholder="OTP Code">
+    <div id="timer">01:00</div>
+    <button class="main-btn" id="confirm">Confirm</button>
+    <p id="otpMessage" class="message"></p>
+  </div>
+</div>
+<script>
+let timerId;
+function startTimer(){
+  let s=60;
+  const el=document.getElementById("timer");
+  clearInterval(timerId);
+  el.textContent="01:00";
+  timerId=setInterval(()=>{
+    s--;
+    el.textContent=`00:${String(s).padStart(2,"0")}`;
+    if(s<=0){clearInterval(timerId);el.textContent="00:00";}
+  },1000);
+}
+document.getElementById("signIn").onclick=()=>{
+  document.getElementById("otpBox").classList.remove("hidden");
+  document.getElementById("otpMessage").textContent="";
+  startTimer();
+};
+document.getElementById("close").onclick=()=>document.getElementById("otpBox").classList.add("hidden");
+document.getElementById("confirm").onclick=()=>{
+  document.getElementById("otpMessage").textContent="Invalid OTP.";
+};
+</script>
+</body>
+</html>
